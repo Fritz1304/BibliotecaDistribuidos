@@ -1,0 +1,66 @@
+package uptc.edu.biblioteca.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import uptc.edu.biblioteca.entities.Libro;
+import uptc.edu.biblioteca.entities.Prestamo;
+import uptc.edu.biblioteca.entities.Usuario;
+import uptc.edu.biblioteca.repositories.PrestamoRepository;
+import uptc.edu.biblioteca.services.LibroService;
+import uptc.edu.biblioteca.services.PrestamoService;
+import uptc.edu.biblioteca.services.UsuarioService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/prestamos")
+public class PrestamoController {
+    @Autowired
+    private PrestamoService prestamoService;
+    private UsuarioService usuarioService;
+
+    private LibroService libroService;
+
+    private PrestamoRepository prestamoRepository;
+    @GetMapping("/activos/{nombreUsuario}")
+    public List<Prestamo> obtenerPrestamosActivos(@PathVariable String nombreUsuario) {
+        Usuario usuario = usuarioService.buscarUsuarioPorNombre(nombreUsuario);
+        return prestamoService.obtenerPrestamosActivosDeUsuario(usuario);
+    }
+
+    @PostMapping("/realizar")
+    public ResponseEntity<String> realizarPrestamo(@RequestParam String nombreUsuario, @RequestParam String tituloLibro) {
+        Usuario usuario = usuarioService.buscarUsuarioPorNombre(nombreUsuario);
+        Libro libro = libroService.buscarLibroPorTitulo(tituloLibro);
+
+        if (usuario == null || libro == null) {
+            return ResponseEntity.badRequest().body("Usuario o libro no encontrado");
+        }
+
+        boolean prestamoExitoso = prestamoService.realizarPrestamo(usuario, libro);
+
+        if (prestamoExitoso) {
+            return ResponseEntity.ok("Préstamo realizado con éxito");
+        } else {
+            return ResponseEntity.badRequest().body("No se pudo realizar el préstamo");
+        }
+    }
+
+    @PostMapping("/finalizar/{prestamoId}")
+    public ResponseEntity<String> finalizarPrestamo(@PathVariable Long prestamoId) {
+        Prestamo prestamo = prestamoRepository.findById(prestamoId).orElse(null);
+
+        if (prestamo == null) {
+            return ResponseEntity.badRequest().body("Prestamo no encontrado");
+        }
+
+        boolean finalizacionExitosa = prestamoService.finalizarPrestamo(prestamo);
+
+        if (finalizacionExitosa) {
+            return ResponseEntity.ok("Préstamo finalizado con éxito");
+        } else {
+            return ResponseEntity.badRequest().body("No se pudo finalizar el préstamo");
+        }
+    }
+}
