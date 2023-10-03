@@ -9,4 +9,8 @@ public interface IAUsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query(value = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
     Usuario findByNombre(String nombre);
     // Otros métodos de consulta personalizados si es necesario
+
+    Usuario findByNombreUsuario(String nombreUsuario);
+
+
 }

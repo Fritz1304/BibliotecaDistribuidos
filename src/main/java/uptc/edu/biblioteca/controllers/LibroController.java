@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import uptc.edu.biblioteca.entities.Libro;
 import uptc.edu.biblioteca.services.LibroService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/libros")
 public class LibroController {

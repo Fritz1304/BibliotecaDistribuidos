@@ -14,6 +14,8 @@ public class Usuario {
     private String apellido;
     private String direccion;
     private String telefono;
+    private String nombreUsuario;
+    private String password;
     // Otros atributos y getters/setters
 
 

@@ -8,9 +8,9 @@ public class Prestamo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @OneToOne
     private Usuario usuario;
-    @ManyToOne
+    @OneToOne
     private Libro libro;
     private boolean activo;
     private Date fechaPrestamo;
