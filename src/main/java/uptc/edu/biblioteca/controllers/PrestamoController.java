@@ -23,11 +23,20 @@ public class PrestamoController {
     private LibroService libroService;
 
     private IAPrestamoRepository IAPrestamoRepository;
+
+//    @GetMapping("/listPrestamos")
+//    public List<Prestamo> listPrestamos(){return prestamoService.listPrestamos();}
+
     @GetMapping("/activos/{nombreUsuario}")
     public List<Prestamo> obtenerPrestamosActivos(@PathVariable String nombreUsuario) {
-        Usuario usuario = usuarioService.buscarUsuarioPorNombre(nombreUsuario);
-        return prestamoService.obtenerPrestamosActivosDeUsuario(usuario);
+        return prestamoService.obtenerPrestamosActivosDeUsuario(nombreUsuario);
     }
+
+    /*
+    @PostMapping("/TestRealizar")
+    public Prestamo crearPrestamo()
+
+     */
 
     @PostMapping("/realizar")
     public ResponseEntity<String> realizarPrestamo(@RequestParam String nombreUsuario, @RequestParam String tituloLibro) {
@@ -63,4 +72,6 @@ public class PrestamoController {
             return ResponseEntity.badRequest().body("No se pudo finalizar el préstamo");
         }
     }
+
+ */
 }

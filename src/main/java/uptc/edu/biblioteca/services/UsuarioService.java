@@ -17,9 +17,7 @@ public class UsuarioService {
     // Otros métodos de lógica de negocio relacionados con los usuarios
 
     // Agregar un método para listar todos los usuarios
-    public List<Usuario> listarTodosLosUsuarios() {
-        return IAUsuarioRepository.findAll();
-    }
+    public List<Usuario> listarTodosLosUsuarios() {return IAUsuarioRepository.findAll();}
 
     // Agregar un método para crear un nuevo usuario
     public Usuario crearUsuario(Usuario nuevoUsuario) {

@@ -18,7 +18,7 @@ public class Libro {
     private String genero;
     private String fechaPublicacion;
     private String idioma;
-    private double multa;
+
     // Otros atributos y getters/setters
 
 
@@ -87,14 +87,6 @@ public class Libro {
 
     public void setIdioma(String idioma) {
         this.idioma = idioma;
-    }
-
-    public double getMulta() {
-        return multa;
-    }
-
-    public void setMulta(double multa) {
-        this.multa = multa;
     }
 
     public boolean isDisponible() {

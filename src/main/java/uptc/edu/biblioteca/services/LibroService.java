@@ -16,9 +16,7 @@ public class LibroService {
 
     public List<Libro> listLibro() {return iaLibroRepository.findAll();}
 
-    public Libro buscarLibroPorTitulo(String titulo) {
-        return iaLibroRepository.findByTitulo(titulo);
-    }
+    public Libro buscarLibroPorTitulo(String titulo) {return iaLibroRepository.findByTitulo(titulo);}
 
     public List<Libro> buscarLibroPorGenero(String genero) {return iaLibroRepository.findByGenero(genero);}
 

@@ -8,6 +8,8 @@ import uptc.edu.biblioteca.entities.Usuario;
 import uptc.edu.biblioteca.repositories.IALibroRepository;
 import uptc.edu.biblioteca.repositories.IAPrestamoRepository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,10 +19,11 @@ public class PrestamoService {
     @Autowired
     private IALibroRepository IALibroRepository;
 
-    public List<Prestamo> obtenerPrestamosActivosDeUsuario(Usuario usuario) {
+    public List<Prestamo> obtenerPrestamosActivosDeUsuario(String nombreUsuario) {
         // Buscar todos los préstamos activos del usuario
-        return IAPrestamoRepository.findByUsuarioAndActivoTrue(usuario);
+        return IAPrestamoRepository.findByUsuarioAndActivoTrue(nombreUsuario);
     }
+
     public boolean realizarPrestamo(Usuario usuario, Libro libro) {
         // Verificar si el usuario tiene préstamos activos
         List<Prestamo> prestamosActivos = IAPrestamoRepository.findByUsuarioAndActivoTrue(usuario);
@@ -38,6 +41,10 @@ public class PrestamoService {
         prestamo.setUsuario(usuario);
         prestamo.setLibro(libro);
         prestamo.setActivo(true);
+
+        //Definit Fechas
+        Date fechaActual = new Date();
+        prestamo.setFechaPrestamo(fechaActual);
 
         // Marcar el libro como no disponible
         libro.setDisponible(false);
@@ -71,4 +78,6 @@ public class PrestamoService {
         return true; // La finalización del préstamo se realizó con éxito.
     }
     // Otros métodos de lógica de negocio relacionados con los préstamos
+
+     */
 }

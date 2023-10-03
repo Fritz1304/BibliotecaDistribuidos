@@ -14,8 +14,6 @@ public class Prestamo {
     private Libro libro;
     private boolean activo;
     private Date fechaPrestamo;
-    private Date fechaDevolucion;
-
     // Otros atributos y getters/setters
 
 
@@ -45,14 +43,6 @@ public class Prestamo {
 
     public void setFechaPrestamo(Date fechaPrestamo) {
         this.fechaPrestamo = fechaPrestamo;
-    }
-
-    public Date getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-
-    public void setFechaDevolucion(Date fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
     }
 
     public void setLibro(Libro libro) {
