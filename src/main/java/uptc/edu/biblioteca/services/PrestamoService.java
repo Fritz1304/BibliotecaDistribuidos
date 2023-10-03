@@ -5,25 +5,25 @@ import org.springframework.stereotype.Service;
 import uptc.edu.biblioteca.entities.Libro;
 import uptc.edu.biblioteca.entities.Prestamo;
 import uptc.edu.biblioteca.entities.Usuario;
-import uptc.edu.biblioteca.repositories.LibroRepository;
-import uptc.edu.biblioteca.repositories.PrestamoRepository;
+import uptc.edu.biblioteca.repositories.IALibroRepository;
+import uptc.edu.biblioteca.repositories.IAPrestamoRepository;
 
 import java.util.List;
 
 @Service
 public class PrestamoService {
     @Autowired
-    private PrestamoRepository prestamoRepository;
+    private IAPrestamoRepository IAPrestamoRepository;
     @Autowired
-    private LibroRepository libroRepository;
+    private IALibroRepository IALibroRepository;
 
     public List<Prestamo> obtenerPrestamosActivosDeUsuario(Usuario usuario) {
         // Buscar todos los préstamos activos del usuario
-        return prestamoRepository.findByUsuarioAndActivoTrue(usuario);
+        return IAPrestamoRepository.findByUsuarioAndActivoTrue(usuario);
     }
     public boolean realizarPrestamo(Usuario usuario, Libro libro) {
         // Verificar si el usuario tiene préstamos activos
-        List<Prestamo> prestamosActivos = prestamoRepository.findByUsuarioAndActivoTrue(usuario);
+        List<Prestamo> prestamosActivos = IAPrestamoRepository.findByUsuarioAndActivoTrue(usuario);
         if (!prestamosActivos.isEmpty()) {
             return false; // El usuario ya tiene préstamos activos, no se puede prestar otro libro.
         }
@@ -43,8 +43,8 @@ public class PrestamoService {
         libro.setDisponible(false);
 
         // Guardar el préstamo y actualizar el estado del libro en la base de datos
-        prestamoRepository.save(prestamo);
-        libroRepository.save(libro);
+        IAPrestamoRepository.save(prestamo);
+        IALibroRepository.save(libro);
 
         return true; // El préstamo se realizó con éxito.
     }
@@ -65,8 +65,8 @@ public class PrestamoService {
         libro.setDisponible(true);
 
         // Actualizar el préstamo y el estado del libro en la base de datos
-        prestamoRepository.save(prestamo);
-        libroRepository.save(libro);
+        IAPrestamoRepository.save(prestamo);
+        IALibroRepository.save(libro);
 
         return true; // La finalización del préstamo se realizó con éxito.
     }

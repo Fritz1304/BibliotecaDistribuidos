@@ -6,7 +6,9 @@ import uptc.edu.biblioteca.entities.Usuario;
 
 import java.util.List;
 
-public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
+public interface IAPrestamoRepository extends JpaRepository<Prestamo, Long> {
+
+
     List<Prestamo> findByUsuarioAndActivoTrue(Usuario usuario);
     // Otros métodos de consulta personalizados si es necesario
 }

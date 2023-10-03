@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import uptc.edu.biblioteca.entities.Libro;
 import uptc.edu.biblioteca.entities.Prestamo;
 import uptc.edu.biblioteca.entities.Usuario;
-import uptc.edu.biblioteca.repositories.PrestamoRepository;
+import uptc.edu.biblioteca.repositories.IAPrestamoRepository;
 import uptc.edu.biblioteca.services.LibroService;
 import uptc.edu.biblioteca.services.PrestamoService;
 import uptc.edu.biblioteca.services.UsuarioService;
@@ -22,7 +22,7 @@ public class PrestamoController {
 
     private LibroService libroService;
 
-    private PrestamoRepository prestamoRepository;
+    private IAPrestamoRepository IAPrestamoRepository;
     @GetMapping("/activos/{nombreUsuario}")
     public List<Prestamo> obtenerPrestamosActivos(@PathVariable String nombreUsuario) {
         Usuario usuario = usuarioService.buscarUsuarioPorNombre(nombreUsuario);
@@ -49,7 +49,7 @@ public class PrestamoController {
 
     @PostMapping("/finalizar/{prestamoId}")
     public ResponseEntity<String> finalizarPrestamo(@PathVariable Long prestamoId) {
-        Prestamo prestamo = prestamoRepository.findById(prestamoId).orElse(null);
+        Prestamo prestamo = IAPrestamoRepository.findById(prestamoId).orElse(null);
 
         if (prestamo == null) {
             return ResponseEntity.badRequest().body("Prestamo no encontrado");
