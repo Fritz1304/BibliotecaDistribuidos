@@ -18,10 +18,11 @@ import java.util.List;
 public class PrestamoController {
     @Autowired
     private PrestamoService prestamoService;
+    @Autowired
     private UsuarioService usuarioService;
-
+    @Autowired
     private LibroService libroService;
-
+    @Autowired
     private IAPrestamoRepository IAPrestamoRepository;
 
 //    @GetMapping("/listPrestamos")
@@ -38,8 +39,8 @@ public class PrestamoController {
 
      */
 
-    @PostMapping("/realizar")
-    public ResponseEntity<String> realizarPrestamo(@RequestParam String nombreUsuario, @RequestParam String tituloLibro) {
+    @PostMapping("/realizar/{nombreUsuario}/{tituloLibro}")
+    public ResponseEntity<String> realizarPrestamo(@PathVariable String nombreUsuario, @PathVariable String tituloLibro) {
         Usuario usuario = usuarioService.buscarUsuarioPorNombre(nombreUsuario);
         Libro libro = libroService.buscarLibroPorTitulo(tituloLibro);
 
@@ -56,6 +57,7 @@ public class PrestamoController {
         }
     }
 
+/*
     @PostMapping("/finalizar/{prestamoId}")
     public ResponseEntity<String> finalizarPrestamo(@PathVariable Long prestamoId) {
         Prestamo prestamo = IAPrestamoRepository.findById(prestamoId).orElse(null);

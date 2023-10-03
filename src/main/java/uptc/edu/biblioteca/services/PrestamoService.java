@@ -25,8 +25,10 @@ public class PrestamoService {
     }
 
     public boolean realizarPrestamo(Usuario usuario, Libro libro) {
+
+        String temp = usuario.getNombreUsuario();
         // Verificar si el usuario tiene préstamos activos
-        List<Prestamo> prestamosActivos = IAPrestamoRepository.findByUsuarioAndActivoTrue(usuario);
+        List<Prestamo> prestamosActivos = IAPrestamoRepository.findByUsuarioAndActivoTrue(temp); //cambiar
         if (!prestamosActivos.isEmpty()) {
             return false; // El usuario ya tiene préstamos activos, no se puede prestar otro libro.
         }
@@ -55,6 +57,9 @@ public class PrestamoService {
 
         return true; // El préstamo se realizó con éxito.
     }
+
+/*
+    public List<Prestamo> listPrestamos() {return IAPrestamoRepository.findAll();}
 
     public boolean finalizarPrestamo(Prestamo prestamo) {
         // Verificar si el préstamo es activo
