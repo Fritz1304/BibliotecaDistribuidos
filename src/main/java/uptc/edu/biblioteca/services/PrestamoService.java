@@ -1,6 +1,7 @@
 package uptc.edu.biblioteca.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uptc.edu.biblioteca.entities.Libro;
 import uptc.edu.biblioteca.entities.Prestamo;
@@ -18,6 +19,9 @@ public class PrestamoService {
     private IAPrestamoRepository IAPrestamoRepository;
     @Autowired
     private IALibroRepository IALibroRepository;
+
+    @Autowired
+    private LibroService libroService;
 
     public List<Prestamo> obtenerPrestamosActivosDeUsuario(String nombreUsuario) {
         // Buscar todos los préstamos activos del usuario
@@ -57,6 +61,43 @@ public class PrestamoService {
 
         return true; // El préstamo se realizó con éxito.
     }
+
+
+
+    public boolean finalizarPrestamo(Prestamo prestamo) {
+        if (prestamo == null) {
+            return false; // El préstamo no existe
+        }
+        // Verifica si el préstamo ya está finalizado
+        if (!prestamo.isActivo()) {
+            return false; // El préstamo ya está finalizado
+        }
+        // Establece la fecha de devolución como la fecha actual
+
+        // Actualiza el estado del préstamo a inactivo (finalizado)
+        prestamo.setActivo(false);
+
+        // Libera el libro relacionado al préstamo
+        Libro libro = prestamo.getLibro();
+        if (libro != null) {
+            // Marca el libro como disponible
+            libro.setDisponible(true);
+
+            Long id = libro.getId();
+
+            // Guarda los cambios en el libro
+            libroService.editLibroWithID(id, libro); // Suponiendo que tienes un servicio para gestionar libros
+        }
+        // Guarda los cambios en el préstamo
+       IAPrestamoRepository.save(prestamo);
+        return true; // Préstamo finalizado con éxito y libro liberado
+    }
+
+    public List<Prestamo> listarTodosLosPrestamos() {return IAPrestamoRepository.findAll();}
+
+
+
+
 
 /*
     public List<Prestamo> listPrestamos() {return IAPrestamoRepository.findAll();}

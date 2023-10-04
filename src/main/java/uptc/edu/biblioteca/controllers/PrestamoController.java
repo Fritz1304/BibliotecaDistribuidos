@@ -57,7 +57,7 @@ public class PrestamoController {
         }
     }
 
-/*
+
     @PostMapping("/finalizar/{prestamoId}")
     public ResponseEntity<String> finalizarPrestamo(@PathVariable Long prestamoId) {
         Prestamo prestamo = IAPrestamoRepository.findById(prestamoId).orElse(null);
@@ -75,5 +75,4 @@ public class PrestamoController {
         }
     }
 
- */
 }
