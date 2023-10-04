@@ -1,6 +1,7 @@
 package uptc.edu.biblioteca.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uptc.edu.biblioteca.entities.Libro;
@@ -39,21 +40,41 @@ public class PrestamoController {
 
      */
 
-    @PostMapping("/realizar/{nombreUsuario}/{tituloLibro}")
-    public ResponseEntity<String> realizarPrestamo(@PathVariable String nombreUsuario, @PathVariable String tituloLibro) {
-        Usuario usuario = usuarioService.buscarUsuarioPorNombre(nombreUsuario);
-        Libro libro = libroService.buscarLibroPorTitulo(tituloLibro);
+    @GetMapping("/todos/{rol}")
+    public ResponseEntity<?> listaPrestamo(@PathVariable String rol) {
+        if ("admin".equals(rol)) {
+            List<Prestamo> prestamos = prestamoService.listarTodosLosPrestamos();
 
-        if (usuario == null || libro == null) {
-            return ResponseEntity.badRequest().body("Usuario o libro no encontrado");
+            if (!prestamos.isEmpty()) {
+                return ResponseEntity.ok(prestamos);
+            }else {
+                return ResponseEntity.notFound().build();
+            }
+        }else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para agregar libros");
         }
+    }
 
-        boolean prestamoExitoso = prestamoService.realizarPrestamo(usuario, libro);
+    @PostMapping("/realizar/{nombreUsuario}/{tituloLibro}/{rol}")
+    public ResponseEntity<String> realizarPrestamo(@PathVariable String nombreUsuario, @PathVariable String tituloLibro, @PathVariable String rol) {
+        if ("admin".equals(rol)){
 
-        if (prestamoExitoso) {
-            return ResponseEntity.ok("Préstamo realizado con éxito");
+            Usuario usuario = usuarioService.buscarUsuarioPorNombre(nombreUsuario);
+            Libro libro = libroService.buscarLibroPorTitulo(tituloLibro);
+
+            if (usuario == null || libro == null) {
+                return ResponseEntity.badRequest().body("Usuario o libro no encontrado");
+            }
+
+            boolean prestamoExitoso = prestamoService.realizarPrestamo(usuario, libro);
+
+            if (prestamoExitoso) {
+                return ResponseEntity.ok("Préstamo realizado con éxito");
+            } else {
+                return ResponseEntity.badRequest().body("No se pudo realizar el préstamo");
+            }
         } else {
-            return ResponseEntity.badRequest().body("No se pudo realizar el préstamo");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para agregar libros");
         }
     }
 

@@ -22,6 +22,7 @@ public class UsuarioService {
     // Agregar un método para crear un nuevo usuario
     public Usuario crearUsuario(Usuario nuevoUsuario) {
         // Puedes agregar validaciones adicionales antes de guardar el usuario, si es necesario.
+        System.out.println("Entro a crear usuario");
         return IAUsuarioRepository.save(nuevoUsuario);
     }
 
